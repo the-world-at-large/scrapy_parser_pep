@@ -1,7 +1,8 @@
 import csv
 from collections import defaultdict
 from datetime import datetime as dt
-from constants import BASE_DIR, RESULTS_DIR, TIME_FORMAT, FILE_FORMAT
+
+from pep_parse.constants import BASE_DIR, RESULTS_DIR, TIME_FORMAT, FILE_FORMAT
 
 
 class PepParsePipeline:
@@ -19,14 +20,14 @@ class PepParsePipeline:
         now_formatted = dt.now().strftime(TIME_FORMAT)
         file_name = f'status_summary_{now_formatted}.{FILE_FORMAT}'
         file_path = f'{BASE_DIR}/{RESULTS_DIR}/{file_name}'
-
-        data = [{'Status': status, 'Count': count}
-                for status, count in self.status_count.items()]
-        total_count = sum(self.status_count.values())
-        data.append({'Status': 'Total', 'Count': total_count})
-
         with open(file_path, 'w', encoding='utf-8', newline='') as csvfile:
             fieldnames = ['Status', 'Count']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerows(data)
+
+            rows = [{'Status': status, 'Count': count}
+                    for status, count in self.status_count.items()]
+            rows.append({'Status': 'Total', 'Count': sum(
+                                            self.status_count.values())})
+
+            writer.writerows(rows)

@@ -1,4 +1,4 @@
-from constants import RESULTS_DIR
+from pep_parse.constants import RESULTS_DIR
 
 BOT_NAME = 'pep_parse'
 
