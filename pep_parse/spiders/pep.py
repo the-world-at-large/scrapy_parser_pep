@@ -1,13 +1,14 @@
 import re
 import scrapy
 
+from pep_parse.constants import PEP_SPIDER_URL
 from pep_parse.items import PepParseItem
 
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
-    allowed_domains = ['peps.python.org']
-    start_urls = ['https://peps.python.org/']
+    allowed_domains = (PEP_SPIDER_URL,)
+    start_urls = [f'https://{PEP_SPIDER_URL}/']
 
     def start_requests(self):
         for start_url in self.start_urls:
